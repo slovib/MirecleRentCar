@@ -22,22 +22,51 @@
     <form method="post">
         {% csrf_token %}
         
-        <div class="input-wrapper">
-            <label for="card_number">Номер карты:</label>
-            <input type="text" name="card_number" id="card_number" placeholder="Введите номер карты" required maxlength="19">
+        <div>
+            <label for="card_number">{{ form.card_number.label }}</label>
+            <input 
+                type="text" 
+                name="card_number" 
+                id="card_number" 
+                value="{{ form.card_number.value|default:'' }}" 
+                required 
+                placeholder="1234 5678 1234 5678"
+            >
+            {% for error in form.card_number.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
         </div>
 
-        <div class="input-wrapper">
-            <label for="expiration_date">Срок действия:</label>
-            <input type="text" name="expiration_date" id="expiration_date" placeholder="ММ/ГГ" required>
+        <div>
+            <label for="expiry_date">{{ form.expiry_date.label }}</label>
+            <input 
+                type="text" 
+                name="expiry_date" 
+                id="expiry_date" 
+                value="{{ form.expiry_date.value|default:'' }}" 
+                required 
+                placeholder="MM/YYYY"
+            >
+            {% for error in form.expiry_date.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
         </div>
 
-        <div class="input-wrapper">
-            <label for="cvv">CVV:</label>
-            <input type="password" name="cvv" id="cvv" class="cvv-input" placeholder="Введите CVV" required maxlength="3">
+        <div>
+            <label for="cvv">{{ form.cvv.label }}</label>
+            <input 
+                type="password" 
+                name="cvv" 
+                id="cvv" 
+                value="{{ form.cvv.value|default:'' }}" 
+                required 
+                maxlength="3" 
+                placeholder="***"
+            >
+            {% for error in form.cvv.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
         </div>
-
-        
 
         <button type="submit">Подтвердить покупку</button>
     </form>

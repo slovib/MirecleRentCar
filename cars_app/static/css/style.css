@@ -1,0 +1,164 @@
+/* Общие стили */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    flex-direction: column;
+    padding: 20px;
+}
+
+h1, h2 {
+    color: #512da8;
+    text-align: center;
+}
+
+/* Увеличенная тень формы + расширение правой стороны */
+form {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Больше тени */
+    padding: 25px 30px 25px 20px; /* Правую сторону делаем чуть больше */
+    width: 100%;
+    max-width: 440px; /* Увеличил ширину формы */
+    text-align: center;
+}
+
+/* Блок выбранного авто */
+.selected-car {
+    background-color: #f9f9f9;
+    border: 2px solid #ddd; /* Сделал границу толще */
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 20px;
+}
+
+.car-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Стилизация полей формы */
+label {
+    display: block;
+    margin: 10px 0 5px;
+    text-align: left;
+    font-weight: 500;
+}
+
+input[type="date"], input[type="text"], button {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #512da8;
+    box-shadow: 0 0 6px rgba(81, 45, 168, 0.4);
+    outline: none;
+}
+
+/* Кнопка */
+button {
+    background-color: #512da8;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 14px;
+    border-radius: 8px;
+}
+
+button:hover {
+    background-color: #5c6bc0;
+    transform: scale(1.04);
+}
+
+/* Ошибки */
+.error {
+    color: red;
+    font-size: 0.9em;
+    text-align: left;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    animation: shake 0.3s;
+}
+
+/* Анимация ошибки */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}
+
+/* Маскирование CVV */
+.cvv-input {
+    -webkit-text-security: disc;
+    text-security: disc;
+    letter-spacing: 3px;
+}
+
+/* Поля карт */
+.input-wrapper input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+/* Ссылка "назад" */
+a {
+    display: inline-block;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #512da8;
+    font-weight: 500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    form {
+        width: 100%;
+        padding: 18px 25px 18px 15px; /* Корректируем отступы на мобильных */
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}
+/* Кнопка "Забронировать" ниже */
+button {
+    background-color: #512da8;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 14px;
+    border-radius: 8px;
+    margin-top: 30px; /* Увеличенный отступ */
+}
+
+button:hover {
+    background-color: #5c6bc0;
+    transform: scale(1.04);
+}

@@ -5,116 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Бронирование автомобиля</title>
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            flex-direction: column;
-        }
-
-        h1 {
-            color: #512da8;
-            margin-bottom: 20px;
-        }
-
-        form {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 400px;
-            text-align: center;
-        }
-
-        .selected-car {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .car-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            text-align: left;
-        }
-
-        input[type="date"], input[type="text"], button {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
-
-        button {
-            background-color: #512da8;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #5c6bc0;
-        }
-
-        a {
-            display: inline-block;
-            margin-top: 15px;
-            text-decoration: none;
-            color: #512da8;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .error-list {
-            color: red;
-            text-align: left;
-            margin-bottom: 10px;
-        }
-
-        .error {
-            color: red;
-            font-size: 0.9em;
-            margin-top: -10px;
-            text-align: left;
-        }
-
-        .cvv-input {
-            -webkit-text-security: disc; /* Для отображения CVV как звёздочек */
-            text-security: disc;
-            letter-spacing: 3px;
-        }
-
-        .input-wrapper {
-            margin-bottom: 15px;
-        }
-
-        .input-wrapper input {
-            width: 100%; /* Поля одинаковой ширины */
-            padding: 10px; /* Однотипные отступы для всех полей */
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            font-size: 1rem;
-        }
-
-    </style>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <h1>Бронирование автомобиля</h1>
@@ -126,7 +17,7 @@
         <div class="selected-car">
             <img src="{{ selected_car.image.url }}" alt="{{ selected_car.make }} {{ selected_car.model }}" class="car-image">
             <h3>{{ selected_car.make }} {{ selected_car.model }}</h3>
-            <p>Цена: {{ selected_car.price }}₸ за день</p>
+            <p>Цена: <span id="car-price">{{ selected_car.price }}</span>₸ за день</p>
         </div>
 
         <input type="hidden" name="car" value="{{ selected_car.id }}">
@@ -150,11 +41,12 @@
         <label for="return_date">Дата возврата:</label>
         {{ form.return_date }}
 
+
         <h2>Оплата</h2>
 
         <div class="input-wrapper">
             <label for="card_number">Номер карты:</label>
-            <input type="text" name="card_number" id="card_number" placeholder="Введите номер карты" required maxlength="19">
+            <input type="tel" name="card_number" id="card_number" placeholder="0000 0000 0000 0000" required maxlength="19">
         </div>
 
         <div class="input-wrapper">
@@ -164,7 +56,7 @@
 
         <div class="input-wrapper">
             <label for="cvv">CVV:</label>
-            <input type="password" name="cvv" id="cvv" class="cvv-input" placeholder="Введите CVV" required maxlength="3">
+            <input type="password" name="cvv" id="cvv" class="cvv-input" placeholder="•••" required maxlength="3">
         </div>
 
         <button type="submit">Забронировать автомобиль</button>
@@ -172,80 +64,6 @@
 
     <a href="{% url 'car_list' %}">Назад к списку автомобилей</a>
 
-    <script>
-        // Функция для форматирования номера карты
-        function formatCardNumber(cardNumber) {
-            cardNumber = cardNumber.replace(/\D/g, ''); // Удаляем все нецифровые символы
-            return cardNumber.replace(/(\d{4})(?=\d)/g, '$1 ').trim(); // Форматируем в 4 группы по 4 цифры
-        }
-
-        // Функция для валидации номера карты (16 цифр)
-        function isValidCardNumber(cardNumber) {
-            const regex = /^[0-9]{16}$/;
-            return regex.test(cardNumber);
-        }
-
-        // Функция для форматирования срока действия (ММ/ГГ)
-        function formatExpirationDate(expirationDate) {
-            expirationDate = expirationDate.replace(/\D/g, ''); // Убираем все нецифровые символы
-            return expirationDate.replace(/(\d{2})(?=\d)/g, '$1/'); // Форматируем как ММ/ГГ
-        }
-
-        // Валидация формы перед отправкой
-        document.getElementById('bookingForm').addEventListener('submit', function (e) {
-            let valid = true;
-
-            // Очистим все ошибки
-            const errorElements = document.querySelectorAll('.error');
-            errorElements.forEach(function (el) {
-                el.remove();
-            });
-
-            // Проверка номера карты
-            const cardNumber = document.getElementById('card_number').value.replace(/\s/g, ''); // Убираем пробелы
-            if (!isValidCardNumber(cardNumber)) {
-                valid = false;
-                const cardNumberError = document.createElement('div');
-                cardNumberError.classList.add('error');
-                cardNumberError.textContent = "Номер карты должен содержать 16 цифр.";
-                document.getElementById('card_number').after(cardNumberError);
-            }
-
-            // Проверка срока действия
-            const expirationDate = document.getElementById('expiration_date').value;
-            if (expirationDate.length !== 5 || expirationDate[2] !== '/' || !/^\d{2}\/\d{2}$/.test(expirationDate)) {
-                valid = false;
-                const expirationDateError = document.createElement('div');
-                expirationDateError.classList.add('error');
-                expirationDateError.textContent = "Введите срок действия в формате ММ/ГГ.";
-                document.getElementById('expiration_date').after(expirationDateError);
-            }
-
-            // Проверка CVV
-            const cvv = document.getElementById('cvv').value;
-            if (cvv.length !== 3 || !/^\d{3}$/.test(cvv)) {
-                valid = false;
-                const cvvError = document.createElement('div');
-                cvvError.classList.add('error');
-                cvvError.textContent = "CVV должен содержать 3 цифры.";
-                document.getElementById('cvv').after(cvvError);
-            }
-
-            // Если все проверки не прошли, отменим отправку формы
-            if (!valid) {
-                e.preventDefault();
-            }
-        });
-
-        // Добавление форматирования для номера карты в реальном времени
-        document.getElementById('card_number').addEventListener('input', function () {
-            this.value = formatCardNumber(this.value);
-        });
-
-        // Добавление форматирования для срока действия в реальном времени
-        document.getElementById('expiration_date').addEventListener('input', function () {
-            this.value = formatExpirationDate(this.value);
-        });
-    </script>
+    <script src="{% static 'js/booking.js' %}"></script>
 </body>
 </html>
