@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход и регистрация</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Ваши стили остаются без изменений */
+        .alert {
+            color: red;
+            font-size: 0.9em;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div id="container" class="container">
+        <div class="form-container sign-in">
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <h1>Вход</h1>
+                {% if form.non_field_errors %}
+                    <div class="alert">{{ form.non_field_errors }}</div>
+                {% endif %}
+                <input type="text" name="username" placeholder="Имя пользователя" required>
+                {% if form.username.errors %}
+                    <div class="alert">{{ form.username.errors }}</div>
+                {% endif %}
+                <input type="password" name="password" placeholder="Пароль" required>
+                {% if form.password.errors %}
+                    <div class="alert">{{ form.password.errors }}</div>
+                {% endif %}
+                <button type="submit">Войти</button>
+                <p>Нет аккаунта? <a href="#" id="register">Зарегистрируйтесь</a></p>
+            </form>
+        </div>
+
+        <div class="form-container sign-up">
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                <h1>Регистрация</h1>
+                {% if form.non_field_errors %}
+                    <div class="alert">{{ form.non_field_errors }}</div>
+                {% endif %}
+                <input type="text" name="username" placeholder="Имя пользователя" required>
+                {% if form.username.errors %}
+                    <div class="alert">{{ form.username.errors }}</div>
+                {% endif %}
+                <input type="email" name="email" placeholder="Электронная почта" required>
+                {% if form.email.errors %}
+                    <div class="alert">{{ form.email.errors }}</div>
+                {% endif %}
+                <input type="text" name="phone_number" placeholder="Номер телефона" required>
+                {% if form.phone_number.errors %}
+                    <div class="alert">{{ form.phone_number.errors }}</div>
+                {% endif %}
+                <input type="password" name="password" placeholder="Пароль" required>
+                {% if form.password.errors %}
+                    <div class="alert">{{ form.password.errors }}</div>
+                {% endif %}
+                <input type="password" name="confirm_password" placeholder="Подтверждение пароля" required>
+
+                {% if form.confirm_password.errors %}
+                    <div class="alert">{{ form.confirm_password.errors }}</div>
+                {% endif %}
+                <button type="submit">Зарегистрироваться</button>
+                <p>Уже есть аккаунт? <a href="#" id="login">Войти</a></p>
+            </form>
+        </div>
+
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Добро пожаловать!</h1>
+                    <p>Пожалуйста, войдите, чтобы продолжить</p>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Создайте аккаунт</h1>
+                    <p>Присоединяйтесь к нам, чтобы начать путешествие!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('container');
+        const registerBtn = document.getElementById('register');
+        const loginBtn = document.getElementById('login');
+
+        registerBtn.addEventListener('click', () => {
+            container.classList.add('active');
+        });
+
+        loginBtn.addEventListener('click', () => {
+            container.classList.remove('active');
+        });
+    </script>
+</body>
+</html>

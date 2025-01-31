@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактировать {{ car.make }} {{ car.model }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Подключение общего стиля -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background-color: #f9f9f9; /* Цвет фона страницы */
+            text-align: center; /* Центрирование текста */
+        }
+        .container {
+            max-width: 600px; /* Максимальная ширина контейнера */
+            margin: 0 auto; /* Центрирование контейнера */
+            padding: 20px;
+            background-color: #fff; /* Белый фон формы */
+            border-radius: 8px; /* Скругление углов */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для контейнера */
+        }
+        h1 {
+            color: #333; /* Цвет заголовка */
+        }
+        form {
+            margin-bottom: 20px; /* Отступ снизу для формы */
+        }
+        button {
+            padding: 10px 20px; /* Отступы внутри кнопки */
+            background-color: #007bff; /* Цвет кнопки */
+            color: white; /* Цвет текста кнопки */
+            border: none; /* Убираем рамку */
+            border-radius: 4px; /* Скругление углов кнопки */
+            cursor: pointer; /* Курсор при наведении */
+            transition: background-color 0.3s; /* Плавный переход цвета */
+        }
+        button:hover {
+            background-color: #0056b3; /* Темнее цвет кнопки при наведении */
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px; /* Отступ сверху для ссылки */
+            padding: 10px 20px; /* Отступы внутри ссылки */
+            background-color: #6c757d; /* Цвет кнопки для отмены */
+            color: white; /* Цвет текста кнопки */
+            border-radius: 4px; /* Скругление углов */
+            text-decoration: none; /* Убираем подчеркивание */
+            transition: background-color 0.3s; /* Плавный переход цвета */
+        }
+        a:hover {
+            background-color: #5a6268; /* Цвет кнопки при наведении */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Редактировать {{ car.make }} {{ car.model }}</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Сохранить изменения</button>
+        </form>
+
+        <a href="{% url 'car_detail' car.id %}">Назад к деталям автомобиля</a>
+    </div>
+</body>
+</html>

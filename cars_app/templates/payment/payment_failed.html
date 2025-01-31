@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ошибка платежа</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<style>
+    /* Основные стили */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f9fc;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #e74c3c;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+a.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    margin: 10px 0;
+    background-color: #512da8;
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+a.btn:hover {
+    background-color: #673ab7;
+    transform: scale(1.05);
+}
+
+/* Адаптивность */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    p {
+        font-size: 1em;
+    }
+
+    a.btn {
+        font-size: 1em;
+    }
+}
+
+</style>
+<body>
+    <div class="container">
+        <h1>Ошибка платежа</h1>
+        <p>К сожалению, ваш платеж не был обработан. Пожалуйста, проверьте информацию о платеже и попробуйте еще раз.</p>
+        <a href="{% url 'view_cart' %}" class="btn">Вернуться в корзину</a>
+        <a href="{% url 'profile' %}" class="btn">Вернуться в профиль</a>
+    </div>
+</body>
+</html>

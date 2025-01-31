@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактировать профиль</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9; /* Цвет фона страницы */
+        }
+        .container {
+            max-width: 600px; /* Максимальная ширина контейнера */
+            margin: 0 auto; /* Центрирование контейнера */
+            padding: 20px;
+            background-color: #fff; /* Белый фон формы */
+            border-radius: 8px; /* Скругление углов */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для контейнера */
+        }
+        h2 {
+            text-align: center;
+            color: #333; /* Цвет заголовка */
+        }
+        h3 {
+            margin-top: 20px; /* Отступ сверху для заголовков секций */
+            color: #555; /* Цвет подзаголовка */
+        }
+        form {
+            display: flex;
+            flex-direction: column; /* Вертикальное расположение полей */
+        }
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="file"],
+        form button {
+            padding: 10px; /* Отступы внутри полей и кнопки */
+            margin-bottom: 15px; /* Отступ между полями */
+            border: 1px solid #ccc; /* Граница для полей ввода */
+            border-radius: 4px; /* Скругление углов */
+            font-size: 1em; /* Размер шрифта */
+        }
+        form button {
+            background-color: #007bff; /* Цвет кнопки */
+            color: white; /* Цвет текста кнопки */
+            border: none; /* Без границы */
+            cursor: pointer; /* Курсор при наведении */
+        }
+        form button:hover {
+            background-color: #0056b3; /* Цвет кнопки при наведении */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Редактировать профиль</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h3>Основная информация</h3>
+            {{ user_form.as_p }}  <!-- Поля для имени пользователя и email -->
+            <h3>Дополнительная информация</h3>
+            {{ profile_form.as_p }}  <!-- Поля для редактирования профиля -->
+            <button type="submit">Сохранить изменения</button>
+        </form>
+    </div>
+</body>
+</html>

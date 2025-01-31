@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ car.make }} {{ car.model }} - Детали автомобиля</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .car-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .review-form {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .review-form h3 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .review-form form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .review-form form input, .review-form form textarea {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        .review-form form button {
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .review-form form button:hover {
+            background-color: #0056b3;
+        }
+
+        .review {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .review strong {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .review em {
+            font-size: 14px;
+            color: #777;
+        }
+
+        .review p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .error {
+            color: red;
+            margin: 10px 0;
+        }
+
+        .book-button, .back-button, .edit-button {
+            display: inline-block;
+            padding: 12px 20px;
+            margin-top: 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .book-button {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .book-button:hover {
+            background-color: #218838;
+        }
+
+        .back-button {
+            background-color: #6c757d;
+            color: #fff;
+            margin-left: 10px;
+        }
+
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+
+        .edit-button {
+            background-color: #ffc107;
+            color: #fff;
+            margin-left: 10px;
+        }
+
+        .edit-button:hover {
+            background-color: #e0a800;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container car-detail">
+    <h1>{{ car.make }} {{ car.model }} ({{ car.year }})</h1>
+    <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }}" class="car-image">
+    
+    <p><strong>Цена:</strong> {{ car.price }} тенге</p>
+    <p><strong>Описание:</strong> {{ car.description }}</p>
+    <p><strong>Тип топлива:</strong> {{ car.fuel_type }}</p>
+    <p><strong>Коробка передач:</strong> {{ car.transmission }}</p>
+    <p><strong>Пробег:</strong> {{ car.mileage }} км</p>
+
+    <h2>Отзывы</h2>
+    {% for review in reviews %}
+        <div class="review">
+            <p><strong>{{ review.user.username }}</strong> ({{ review.rating }}/5)</p>
+            <p>{{ review.comment }}</p>
+            <p><em>Добавлено: {{ review.created_at }}</em></p>
+        </div>
+    {% empty %}
+        <p>Нет отзывов для этого автомобиля.</p>
+    {% endfor %}
+
+    <div class="review-form">
+        <h3>Оставить отзыв</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if form.errors %}
+                <div class="error">
+                    Пожалуйста, исправьте ошибки в форме.
+                </div>
+            {% endif %}
+            <button type="submit">Отправить отзыв</button>
+        </form>
+    </div>
+
+    <!-- Кнопка для бронирования автомобиля -->
+    <a href="{% url 'rent_car' car.id %}" class="book-button">Забронировать автомобиль</a>
+
+    <a href="{% url 'car_list' %}" class="back-button">Назад к списку автомобилей</a>
+
+    {% if user.is_authenticated and user.profile.is_seller %}
+        <a href="{% url 'edit_car' car.id %}" class="edit-button">Редактировать автомобиль</a>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

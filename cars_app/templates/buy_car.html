@@ -1,0 +1,47 @@
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Покупка автомобиля</title>
+    <style>
+        /* Стили остаются прежними */
+    </style>
+</head>
+<body>
+
+<div class="car-info">
+    <h1>Покупка автомобиля</h1>
+    <p>Вы собираетесь купить: <strong>{{ car.make }} {{ car.model }}</strong> за <strong>{{ car.price|to_millions }} миллионов тенге.</strong></p>
+    <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }}">
+</div>
+
+<div class="form-container">
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="input-wrapper">
+            <label for="card_number">Номер карты:</label>
+            <input type="text" name="card_number" id="card_number" placeholder="Введите номер карты" required maxlength="19">
+        </div>
+
+        <div class="input-wrapper">
+            <label for="expiration_date">Срок действия:</label>
+            <input type="text" name="expiration_date" id="expiration_date" placeholder="ММ/ГГ" required>
+        </div>
+
+        <div class="input-wrapper">
+            <label for="cvv">CVV:</label>
+            <input type="password" name="cvv" id="cvv" class="cvv-input" placeholder="Введите CVV" required maxlength="3">
+        </div>
+
+        
+
+        <button type="submit">Подтвердить покупку</button>
+    </form>
+</div>
+
+</body>
+</html>

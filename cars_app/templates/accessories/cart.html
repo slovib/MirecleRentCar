@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .cart-container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: auto;
+            margin-right: 15px;
+        }
+
+        .cart-item h2 {
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .cart-item p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .total {
+            font-size: 1.5em;
+            margin-top: 20px;
+            text-align: right;
+            color: #333;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #218838;
+        }
+
+        .pay-button {
+            background-color: #007bff; /* Цвет кнопки "Оплатить" */
+        }
+
+        .pay-button:hover {
+            background-color: #0056b3; /* Цвет кнопки при наведении */
+        }
+    </style>
+</head>
+<body>
+    <h1>Корзина</h1>
+    <div class="cart-container">
+        <ul>
+            {% for item in cart_items %}
+                <li class="cart-item">
+                    <img src="{{ item.accessory.image.url }}" alt="{{ item.accessory.name }}">
+                    <div>
+                        <h2>{{ item.accessory.name }}</h2>
+                        <p>Количество: {{ item.quantity }}</p>
+                        <p>Цена: {{ item.accessory.price }} тенге</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <h2 class="total">Итого: {{ total_price }} тенге</h2>
+        <a href="{% url 'payment_page' %}" class="button pay-button">Оплатить</a> <!-- Ссылка на страницу оплаты -->
+        <a href="{% url 'accessory_list' %}" class="button">Вернуться к аксессуарам</a>
+    </div>
+</body>
+</html>

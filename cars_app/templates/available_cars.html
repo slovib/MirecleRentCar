@@ -1,0 +1,214 @@
+{% load custom_filters %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доступные автомобили для покупки</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f7f7fc;
+            margin: 0;
+            color: #333;
+            padding-top: 80px;
+        }
+
+        .navbar {
+            background-color: #512da8;
+            padding: 16px 30px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar a {
+            color: white;
+            margin: 0 18px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #f7f7fc;
+            text-decoration: underline;
+        }
+
+        .navbar a:last-child {
+            background-color: #f44336;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            text-align: center;
+        }
+
+        .navbar a:last-child:hover {
+            background-color: #d32f2f;
+            transform: scale(1.05);
+        }
+
+        h1 {
+            text-align: center;
+            margin: 100px 0 20px 0;
+            font-size: 28px;
+            color: #333;
+        }
+
+        .car-catalog {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px auto;
+            max-width: 1200px;
+            padding: 0 10px;
+        }
+
+        .car-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(223, 223, 223, 0.1);
+            margin: 15px;
+            padding: 15px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .car-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .car-details {
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            margin-top: 10px;
+            color: #fff;
+            background-color: #512da8;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #5c6bc0;
+        }
+
+        .no-cars {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 20px;
+            }
+
+            .navbar a {
+                font-size: 1em;
+                margin: 0 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .car-catalog {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .car-card {
+                width: 90%;
+            }
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: black;
+        }
+        
+        .profile-photo {
+            width: 40px; /* Размер фото */
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        
+        .profile-name {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="{% url 'profile' %}" class="user-profile">
+        <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="profile-photo">
+        <span class="profile-name">{{ user.username }}</span>
+    </a>
+    <a href="{% url 'car_list' %}">Список автомобилей для аренды</a>
+    <a href="{% url 'accessory_list' %}">Аксессуары</a>
+    <a href="{% url 'available_cars' %}">Купить автомобиль</a>
+    <a href="{% url 'logout' %}">Выйти</a>
+</div>
+
+{% block content %}
+<h1>Доступные автомобили</h1>
+
+<div class="car-catalog">
+    {% for car in cars %}
+        <div class="car-card">
+            <img src="{{ car.image.url }}" alt="{{ car.make }} {{ car.model }}" class="car-image">
+            <div class="car-details">
+                <h2>{{ car.make }} {{ car.model }}</h2>
+                <p><strong>Цена:</strong> {{ car.price|to_millions }} млн ₸</p>
+                <p><strong>Год выпуска:</strong> {{ car.year }}</p>
+                <p><strong>Пробег:</strong> {{ car.mileage|default:"Не указан" }} км</p>
+                <p><strong>Тип топлива:</strong> {{ car.fuel_type }}</p>
+                <form action="{% url 'buy_car' car.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Купить</button>
+                </form>
+            </div>
+        </div>
+    {% empty %}
+        <p class="no-cars">Нет доступных автомобилей.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+</body>
+</html>
