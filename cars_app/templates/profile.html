@@ -2,42 +2,34 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Профиль пользователя</title>
-    {% comment %} <link rel="stylesheet" href="{% static 'css/styles.css' %}"> {% endcomment %}
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
     <style>
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            margin: 0; padding: 0; box-sizing: border-box;
             font-family: 'Montserrat', sans-serif;
         }
         body {
-            font-family: 'Montserrat', sans-serif;
             background-color: #f7f7fc;
-            margin: 0;
             color: #333;
             padding-top: 80px;
         }
-
         .navbar {
             background-color: #512da8;
             padding: 16px 30px;
             position: fixed;
             width: 100%;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-
         .navbar a {
             color: white;
             margin: 0 18px;
@@ -45,12 +37,10 @@
             font-weight: 500;
             transition: color 0.3s;
         }
-
         .navbar a:hover {
             color: #f7f7fc;
             text-decoration: underline;
         }
-
         .navbar a:last-child {
             background-color: #f44336;
             padding: 10px 20px;
@@ -59,12 +49,10 @@
             transition: background-color 0.3s ease, transform 0.3s ease;
             text-align: center;
         }
-
         .navbar a:last-child:hover {
             background-color: #d32f2f;
             transform: scale(1.05);
         }
-
         .profile-container {
             background-color: #fff;
             border-radius: 12px;
@@ -73,14 +61,7 @@
             padding: 30px;
             text-align: center;
             margin: 100px auto 40px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .profile-container:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
         .avatar {
             width: 120px;
             height: 120px;
@@ -89,19 +70,16 @@
             margin-bottom: 20px;
             object-fit: cover;
         }
-
         h1 {
             font-size: 28px;
             color: #333;
             margin: 10px 0;
         }
-
         p {
             font-size: 16px;
             color: #777;
             margin: 5px 0;
         }
-
         .btn {
             display: inline-block;
             padding: 12px 24px;
@@ -113,9 +91,8 @@
             text-decoration: none;
             font-size: 16px;
             font-weight: 500;
-            transition: background-color 0.3s ease;
+            cursor: pointer;
         }
-
         .btn:hover {
             background-color: #5c6bc0;
         }
@@ -127,11 +104,6 @@
             font-size: 22px;
             font-weight: 600;
             color: #512da8;
-            transition: color 0.3s ease;
-        }
-
-        .toggle-section:hover {
-            color: #5c6bc0;
         }
 
         .cards-container {
@@ -141,111 +113,151 @@
             margin-top: 30px;
             gap: 20px;
         }
-
         .card {
             background-color: #fff;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             width: 320px;
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-        }
-
         .card img {
             width: 100%;
             height: 180px;
             object-fit: cover;
             border-bottom: 2px solid #f0f0f5;
         }
-
         .card-details {
             padding: 20px;
             text-align: left;
         }
-
         .card-details h3 {
             font-size: 20px;
             color: #512da8;
             margin-bottom: 12px;
         }
-
         .card-details p {
             font-size: 14px;
             color: #555;
             margin-bottom: 8px;
         }
-
-        .order-car-btn {
-            display: block;
-            margin: 30px auto;
-            padding: 12px 24px;
-            background-color: #512da8;
-            color: #fff;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 500;
-            text-decoration: none;
-            text-align: center;
-            transition: background-color 0.3s ease;
-        }
-
-        .order-car-btn:hover {
-            background-color: #5c6bc0;
-        }
-
         .no-items-message {
             color: #777;
             font-size: 18px;
             text-align: center;
             margin-top: 40px;
         }
+
         .user-profile {
             display: flex;
             align-items: center;
             text-decoration: none;
-            color: black;
+            color: white;
         }
-        
+
         .profile-photo {
-            width: 40px; /* Размер фото */
+            width: 40px;
             height: 40px;
             border-radius: 50%;
             object-fit: cover;
             margin-right: 10px;
         }
-        
+
         .profile-name {
             font-weight: bold;
         }
-        
+
+        /* Toggle Switch */
+        .role-switch-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .role-toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 28px;
+        }
+
+        .role-toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 28px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #4caf50;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .role-label {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
     </style>
     <script>
         function toggleVisibility(sectionId) {
             const section = document.getElementById(sectionId);
-            section.style.display = section.style.display === "none" || section.style.display === "" ? "flex" : "none";
+            section.style.display = section.style.display === "none" ? "flex" : "none";
         }
     </script>
 </head>
 <body>
     <div class="navbar">
         <a href="{% url 'profile' %}" class="user-profile">
-            <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="profile-photo">
+            <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="profile-photo" />
             <span class="profile-name">{{ user.username }}</span>
         </a>
-        
-        <a href="{% url 'car_list' %}">Список автомобилей для аренды</a>
-        <a href="{% url 'accessory_list' %}">Аксессуары</a>
-        <a href="{% url 'available_cars' %}">Купить автомобиль</a>
-        <a href="{% url 'logout' %}">Выйти</a>
+
+        <div class="role-switch-wrapper">
+            <span class="role-label">
+                {% if user.profile.is_seller %}Продавец{% else %}Покупатель{% endif %}
+            </span>
+            <label class="role-toggle-switch">
+                <input type="checkbox" id="roleSwitch" {% if user.profile.is_seller %}checked{% endif %} />
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div>
+            <a href="{% url 'car_list' %}">Аренда</a>
+            <a href="{% url 'accessory_list' %}">Аксессуары</a>
+            <a href="{% url 'available_cars' %}">Покупка</a>
+            <a href="{% url 'logout' %}">Выйти</a>
+        </div>
     </div>
 
     <div class="profile-container">
-        <img src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% static 'default_avatar.png' %}{% endif %}" alt="Avatar" class="avatar">
+        <img src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}{% static 'default_avatar.png' %}{% endif %}" alt="Avatar" class="avatar" />
         <h1>{{ user.username }}</h1>
         <p>Email: {{ user.email }}</p>
         <p>Телефон: {{ user.profile.phone_number }}</p>
@@ -256,7 +268,7 @@
     <div id="rental-cards" class="cards-container" style="display: none;">
         {% for rental in rentals %}
         <div class="card">
-            <img src="{{ rental.car.image.url }}" alt="{{ rental.car.make }} {{ rental.car.model }}">
+            <img src="{{ rental.car.image.url }}" alt="{{ rental.car.make }} {{ rental.car.model }}" />
             <div class="card-details">
                 <h3>{{ rental.car.make }} {{ rental.car.model }}</h3>
                 <p><strong>Дата начала:</strong> {{ rental.start_date }}</p>
@@ -275,11 +287,11 @@
         {% for order in orders %}
         <div class="card">
             {% if order.car %}
-            <img src="{{ order.car.image.url }}" alt="{{ order.car.make }} {{ order.car.model }}">
-            <h3>{{ order.car.make }} {{ order.car.model }}</h3>
+                <img src="{{ order.car.image.url }}" alt="{{ order.car.make }} {{ order.car.model }}" />
+                <h3>{{ order.car.make }} {{ order.car.model }}</h3>
             {% elif order.accessory %}
-            <img src="{{ order.accessory.image.url }}" alt="{{ order.accessory.name }}">
-            <h3>{{ order.accessory.name }}</h3>
+                <img src="{{ order.accessory.image.url }}" alt="{{ order.accessory.name }}" />
+                <h3>{{ order.accessory.name }}</h3>
             {% endif %}
             <div class="card-details">
                 <p>Количество: {{ order.quantity }}</p>
@@ -291,5 +303,28 @@
         <div class="no-items-message">У вас нет оплаченных заказов.</div>
         {% endfor %}
     </div>
+
+    <script>
+        // Обработка переключения роли
+        const roleSwitch = document.getElementById('roleSwitch');
+        roleSwitch.addEventListener('change', () => {
+            fetch("{% url 'toggle_role' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert("Ошибка при смене роли");
+                }
+            })
+            .catch(() => alert("Ошибка при подключении"));
+        });
+    </script>
 </body>
 </html>

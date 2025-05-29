@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',  # Используйте PostgreSQL как бэкенд
         'NAME': 'amanova',  # Название вашей базы данных
         'USER': 'postgres',  # Ваше имя пользователя PostgreSQL
-        'PASSWORD': 'rootroot',  # Ваш пароль пользователя
+        'PASSWORD': 'admin',  # Ваш пароль пользователя
         'HOST': '127.0.0.1',  # Например: 'localhost' или '127.0.0.1'
         'PORT': '5432',  # Порт по умолчанию для PostgreSQL
     }

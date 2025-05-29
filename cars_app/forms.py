@@ -88,31 +88,69 @@ class ReviewForm(forms.ModelForm):
 
 
 # Форма регистрации
+import re
+from django import forms
+from django.contrib.auth.models import User
+
+from django.contrib.auth.models import User
+from .models import Profile  # Импортируй свою модель профиля
+
 class RegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_password = forms.CharField(widget=forms.PasswordInput(), label="Подтверждение пароля")
     email = forms.EmailField()
     phone_number = forms.CharField(
-        max_length=15,
+        max_length=17,
         required=True,
         label="Номер телефона",
         widget=forms.TextInput(attrs={
-            'placeholder': 'Введите номер телефона',
-            'pattern': '[0-9]*',
-            'inputmode': 'numeric'
+            'placeholder': '+7 700 679 5801',
+            'inputmode': 'tel'
         })
     )
 
     class Meta:
         model = User
-        fields = ['username', 'password', 'email', 'phone_number']
+        fields = ['username', 'password', 'email']
 
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
         confirm_password = cleaned_data.get("confirm_password")
+
+    # Проверка совпадения паролей
         if password != confirm_password:
             raise forms.ValidationError("Пароли не совпадают.")
+
+    # Проверка надежности пароля
+        if password:
+            if len(password) < 8:
+                raise forms.ValidationError("Пароль должен содержать минимум 8 символов.")
+            if not re.search(r'[A-Z]', password):
+                raise forms.ValidationError("Пароль должен содержать хотя бы одну заглавную букву.")
+            if not re.search(r'\d', password):
+                raise forms.ValidationError("Пароль должен содержать хотя бы одну цифру.")
+            if not re.search(r'[^A-Za-z0-9]', password):
+                raise forms.ValidationError("Пароль должен содержать хотя бы один специальный символ.")
+
+    # Проверка номера телефона
+        phone = cleaned_data.get("phone_number")
+        if phone:
+            phone_cleaned = re.sub(r'\s+', '', phone)
+        if not re.match(r'^(\+7|8)\d{10}$', phone_cleaned):
+            raise forms.ValidationError("Номер телефона должен начинаться с +7 или 8 и содержать 11 цифр.")
+        cleaned_data['phone_number'] = phone_cleaned
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])  # хэширование пароля
+        if commit:
+            user.save()
+            # Создаем профиль и сохраняем номер телефона
+            Profile.objects.create(user=user, phone_number=self.cleaned_data['phone_number'])
+        return user
+
+
 
 # Форма входа
 class LoginForm(forms.Form):

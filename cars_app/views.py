@@ -9,6 +9,27 @@ from .forms import (CarForm, CardForm, PaymentForm, ReviewForm,
                     RentalForm, RegistrationForm, LoginForm,
                     ProfileForm, UserEditForm, AccessoryForm)
 from django.db.models import Q
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from .models import Car, Review
+from .forms import ReviewForm
+from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Car, Order
+from .forms import PaymentForm
+
+# Детали автомобиля
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Car, Review
+from .forms import ReviewForm
+from django.contrib import messages
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Car, Review
+from .forms import ReviewForm
+from django.contrib import messages
+
+
 
 # Проверка, является ли пользователь продавцом или администратором
 def is_seller_or_staff(user):
@@ -47,22 +68,6 @@ def accessory_list(request):
     accessories = Accessory.objects.all()
     cart_item_count = Cart.objects.filter(user=request.user).count() if request.user.is_authenticated else 0
     return render(request, 'accessories/accessory_list.html', {'accessories': accessories, 'cart_item_count': cart_item_count})
-
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-from .models import Car, Review
-from .forms import ReviewForm
-
-# Детали автомобиля
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Car, Review
-from .forms import ReviewForm
-from django.contrib import messages
-
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Car, Review
-from .forms import ReviewForm
-from django.contrib import messages
 
 def car_detail(request, car_id):
     car = get_object_or_404(Car, id=car_id)
@@ -188,7 +193,7 @@ def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
+            user = form.save()
             user.set_password(form.cleaned_data['password'])
             user.save()
             login(request, user)
@@ -371,10 +376,7 @@ def add_car_for_sale(request):
     return render(request, 'add_car_for_sale.html', {'form': form})
 
 # Покупка автомобиля
-from django.contrib import messages
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Car, Order
-from .forms import PaymentForm
+
 
 @login_required
 def buy_car(request, car_id):
@@ -404,7 +406,24 @@ def buy_car(request, car_id):
 
 
 
-from django.shortcuts import render
-
 def payment_success(request):
     return render(request, 'payment/payment_success.html')
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.views.decorators.http import require_POST
+
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+
+@login_required
+@csrf_exempt
+def toggle_role(request):
+    if request.method == "POST":
+        profile = request.user.profile
+        profile.is_seller = not profile.is_seller
+        profile.save()
+        return JsonResponse({"success": True})
+    return JsonResponse({"success": False}, status=400)
+

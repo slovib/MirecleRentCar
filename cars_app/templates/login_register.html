@@ -70,10 +70,11 @@
                 {% if form.email.errors %}
                     <div class="alert">{{ form.email.errors }}</div>
                 {% endif %}
-                <input type="text" name="phone_number" placeholder="Номер телефона" required>
+                <input type="tel" id="phone_number" name="phone_number" placeholder="+7 XXX XXX XX XX" required value="+7 " maxlength="16">
                 {% if form.phone_number.errors %}
                     <div class="alert">{{ form.phone_number.errors }}</div>
                 {% endif %}
+
                 <input type="password" name="password" placeholder="Пароль" required>
                 {% if form.password.errors %}
                     <div class="alert">{{ form.password.errors }}</div>
@@ -115,5 +116,61 @@
             container.classList.remove('active');
         });
     </script>
+    <script>
+        const phoneInput = document.getElementById('phone_number');
+
+// При загрузке ставим "+7 "
+phoneInput.value = '+7 ';
+
+// Обработчик ввода
+phoneInput.addEventListener('input', function(event) {
+    let value = phoneInput.value;
+
+    // Удаляем всё кроме цифр
+    let digits = value.replace(/\D/g, '');
+
+    // Убираем первый '7' из цифр, так как +7 уже есть
+    if (digits.startsWith('7')) {
+        digits = digits.slice(1);
+    } else if (digits.startsWith('8')) {
+        digits = digits.slice(1); // На всякий случай
+    }
+
+    // Ограничиваем максимум 10 цифр (телефон без +7)
+    digits = digits.substring(0, 10);
+
+    // Форматируем с пробелами: +7 XXX XXX XX XX
+    let formatted = '+7 ';
+    if (digits.length > 0) {
+        formatted += digits.substring(0, 3);
+    }
+    if (digits.length >= 4) {
+        formatted += ' ' + digits.substring(3, 6);
+    }
+    if (digits.length >= 7) {
+        formatted += ' ' + digits.substring(6, 8);
+    }
+    if (digits.length >= 9) {
+        formatted += ' ' + digits.substring(8, 10);
+    }
+
+    phoneInput.value = formatted;
+});
+
+// Блокируем удаление префикса "+7 "
+phoneInput.addEventListener('keydown', function(event) {
+    const start = phoneInput.selectionStart;
+    if ((start <= 3) && (event.key === 'Backspace' || event.key === 'Delete')) {
+        event.preventDefault();
+    }
+});
+
+// Запрет на вставку
+phoneInput.addEventListener('paste', function(event) {
+    event.preventDefault();
+});
+
+    </script>
+    
 </body>
 </html>

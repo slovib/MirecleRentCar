@@ -24,7 +24,8 @@ from .views import (
     complete_payment,
     payment_success,
     add_card,
-    index
+    index,
+    toggle_role,
 )
 from django.views.generic import TemplateView
 from django.conf import settings
@@ -69,6 +70,8 @@ urlpatterns = [
 
     # Добавление карты
     path('add_card/', add_card, name='add_card'),
+
+    path('toggle-role/', toggle_role, name='toggle_role'),
 ]
 
 # Статические файлы в режиме отладки
